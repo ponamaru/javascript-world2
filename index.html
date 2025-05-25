@@ -26,11 +26,25 @@ html, body {
   left: 10%;
   display: none;
 }
+#bo4 {
+  position: absolute;
+  top: 80%;
+  left: 10%;
+  display: inline-block;
+  animation: floatUpDown 2s ease-in-out infinite;
+}
 #bo3 {
   transform: rotate(180deg); 
   position: absolute;
   top: 80%;
   left: 20%;
+}
+
+
+@keyframes floatUpDown {
+  0%   { transform: rotate(90deg) translateX(0); }
+  50%  { transform: rotate(90deg) translateX(-10px); }
+  100% { transform: rotate(90deg) translateX(0); }
 }
 </style>
 </head>
@@ -40,6 +54,7 @@ html, body {
 <img src="イラスト13.png" id="bo1" width="10%">
 <img src="イラスト13.png" id="bo2" width="10%">
 <img src="イラスト13.png" id="bo3" width="10%">
+<img src="イラスト13.png" id="bo4" width="10%">
 
 <script>
 window.onload = function() {
@@ -62,7 +77,7 @@ window.onload = function() {
 };
 
 var backS = ["14.png","15.png"];
-var backSS = [backS,[]];
+var backSS = [backS,["stage10.png","stage11.png"]];
 var backN = 0;
 var backNN = 0;
 const vi = document.getElementById("vi");
@@ -124,6 +139,7 @@ if(con === true) {
 con = false;
 setTimeout(() => {
 con = true;
+bo4B();
 }, "1000");
   eventB = "bo1";
   red();
@@ -143,6 +159,7 @@ if(con === true) {
 con = false;
 setTimeout(() => {
 con = true;
+bo4B();
 }, "1000");
   eventB = "bo3";
   red();
@@ -161,7 +178,7 @@ right();
 
 // アニメーション中の画像変更
 function red() {
-
+document.getElementById("bo4").style.display = "none";
   document.getElementById(eventB).src = "イラスト14.png";
   setTimeout(() => {
     document.getElementById(eventB).src = "イラスト13.png";
@@ -185,6 +202,49 @@ vi.src = backSS[backN][backNN];
   }, 500);
 
 }
+
+document.getElementById("bo4").addEventListener("click", () => {
+if(con === true) {
+backC();
+document.getElementById("bo4").style.display = "none";
+con = false;
+setTimeout(() => {
+con = true;
+bo4B();
+}, "1000");
+}
+});
+
+function backC() {
+if(backSS[backN][backNN] === backSS[0][0]){
+backN = 1;
+}
+if(backSS[backN][backNN] === backSS[1][1]){
+backN = 0;
+}
+vi.src = backSS[backN][backNN];
+}
+
+function bo4B () {
+if(backSS[backN][backNN] === backSS[0][0]){
+document.getElementById("bo4").style.display = "block";
+document.getElementById("bo4").style.top = "80%";
+document.getElementById("bo4").style.left = "65%";
+}
+if(backSS[backN][backNN] === backSS[0][1]){
+document.getElementById("bo4").style.display = "none";
+}
+
+if(backSS[backN][backNN] === backSS[1][1]){
+document.getElementById("bo4").style.display = "block";
+document.getElementById("bo4").style.top = "70%";
+document.getElementById("bo4").style.left = "50%";
+}
+if(backSS[backN][backNN] === backSS[1][0]){
+document.getElementById("bo4").style.display = "none";
+}
+}
+bo4B();
 </script>
 </body>
 </html>
