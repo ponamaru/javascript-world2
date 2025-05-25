@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html, body {
+  background-color: black;
+  overflow: hidden;
+  margin: 0;
+}
+#vi {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+
+}
+#bo1 {
+  position: absolute;
+  top: 80%;
+  left: 1%;
+}
+#bo2 {
+  transform: rotate(90deg); 
+  position: absolute;
+  top: 80%;
+  left: 10%;
+  display: none;
+}
+#bo3 {
+  transform: rotate(180deg); 
+  position: absolute;
+  top: 80%;
+  left: 20%;
+}
+</style>
+</head>
+<body>
+
+<img src="thumbnail.png" id="vi" width="200%">
+<img src="イラスト13.png" id="bo1" width="10%">
+<img src="イラスト13.png" id="bo2" width="10%">
+<img src="イラスト13.png" id="bo3" width="10%">
+
+<script>
+window.onload = function() {
+  const vi = document.getElementById("vi");
+
+  vi.onload = () => {
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+
+    const imgW = vi.offsetWidth;
+    const imgH = vi.offsetHeight;
+
+    vi.style.left = (winW / 2 - imgW / 2) + "px";
+    vi.style.top = (winH / 2 - imgH / 2) + "px";
+  };
+
+  if (vi.complete) {
+    vi.onload();
+  }
+};
+
+var backS = ["thumbnail.png","thumbnail (1).png"];
+var backSS = [backS,[]];
+var backN = 0;
+var backNN = 0;
+const vi = document.getElementById("vi");
+vi.style.width = "140%";
+let eventB = "";
+var con = true;
+// イージング関数
+function easeIn(t) {
+  return t * t * t;
+}
+function easeOut(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+// 加速アニメーション（左に移動）
+function animateIn(startX, endX, duration, onComplete) {
+  const startTime = performance.now();
+
+  function animate(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeIn(progress);
+    vi.style.left = startX + (endX - startX) * eased + "px";
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else if (onComplete) {
+      onComplete();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// 減速アニメーション（さらに移動）
+function animateOut(startX, endX, duration) {
+  const startTime = performance.now();
+  function animate(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeOut(progress);
+    
+if(eventB === "bo1"){
+vi.style.left = startX -500 + (endX - startX) * eased + "px";
+}
+if(eventB === "bo3"){
+vi.style.left = startX +500 + (endX - startX) * eased + "px";
+}
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+document.getElementById("bo1").addEventListener("click", () => {
+if(con === true) {
+con = false;
+setTimeout(() => {
+con = true;
+}, "1000");
+  eventB = "bo1";
+  red();
+left();
+  const startX = parseFloat(vi.style.left) || 0;
+  const midX = startX + 200;
+  const endX = startX + 500;
+
+  animateIn(startX, midX, 500, () => {
+    animateOut(midX, endX, 500);
+  });
+}
+});
+
+document.getElementById("bo3").addEventListener("click", () => {
+if(con === true) {
+con = false;
+setTimeout(() => {
+con = true;
+}, "1000");
+  eventB = "bo3";
+  red();
+right();
+  const startX = parseFloat(vi.style.left) || 0;
+  const midX = startX - 200;
+  const endX = startX - 500;
+
+  animateIn(startX, midX, 500, () => {
+    animateOut(midX, endX, 500);
+
+  });
+}
+});
+
+
+// アニメーション中の画像変更
+function red() {
+
+  document.getElementById(eventB).src = "イラスト14.png";
+  setTimeout(() => {
+    document.getElementById(eventB).src = "イラスト13.png";
+  }, 500);
+}
+
+function left (){
+backNN -= 1;
+if(backNN < 0)backNN = backSS[backN].length -1;
+if(backNN > backSS[backN].length -1)backNN = 0;
+  setTimeout(() => {
+vi.src = backSS[backN][backNN];
+  }, 500);
+}
+function right (){
+backNN += 1;
+if(backNN < 1)backNN = backSS[backN].length -1;
+if(backNN > backSS[backN].length -1)backNN = 0;
+  setTimeout(() => {
+vi.src = backSS[backN][backNN];
+  }, 500);
+
+}
+</script>
+</body>
+</html>
